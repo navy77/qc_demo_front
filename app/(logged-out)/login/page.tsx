@@ -63,7 +63,7 @@ export default function LoginPage() {
       <LockKeyholeIcon size={50} />
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Login1</CardTitle>
+          <CardTitle>Login</CardTitle>
           <CardDescription>Login to Measurement system</CardDescription>
         </CardHeader>
         <CardContent>
