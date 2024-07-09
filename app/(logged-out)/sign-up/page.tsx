@@ -26,15 +26,15 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-
-
 const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string()
-      .min(8, { message: "Password must be at least 8 characters." })
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special symbol." })
-  });
-  
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters." })
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+      message: "Password must contain at least one special symbol.",
+    }),
+});
 
 export default function SignupPage() {
   const router = useRouter();
@@ -74,7 +74,7 @@ export default function SignupPage() {
                     <FormControl>
                       <Input placeholder="abc@minebea.co.th" {...field} />
                     </FormControl>
-     
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -89,7 +89,8 @@ export default function SignupPage() {
                       <Input placeholder="••••••••" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Password must contain least 8 characters with special symbols  /[!@#$%^&*(),.?":{}|<>]/</>
+                      Password must contain least 8 characters with special
+                      symbols /[!@#$%^&*(),.?":{}|<>]/</>
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
