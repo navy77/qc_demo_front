@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from 'react'
 
 export default function DashboardPage() {
+  
   return (
     <Tabs defaultValue="measure">
       <TabsList className="mb-4">

@@ -10,6 +10,7 @@ import { ClipboardCheckIcon, ComputerIcon, CpuIcon, FactoryIcon } from 'lucide-r
 import SummaryMeasure from './chart_summary_measure';
 
 export default function MeasureStat() {
+
   const totaSpec = 100;
   const totaModel = 80;
   const totaDevice = 20;

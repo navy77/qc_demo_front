@@ -26,13 +26,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-// const formSchema = z.object({
-//   email: z.string().email(),
-//   password: z.string().min(8,{
-//     message:"Password must be at least 8 characters."
-//   }),
-// });
-
 const formSchema = z.object({
   email: z.string().email(),
   password: z
