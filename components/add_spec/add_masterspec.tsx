@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react"; 
+import React, { useState, useEffect } from "react"; 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -61,17 +61,13 @@ const formSchema = z.object({
     .transform((val) => parseFloat(val))
     .refine((val) => !isNaN(val), {
       message: "Tolerance max must be a valid number",
-    })
-    .refine((val) => val >= 0, {
-      message: "Tolerance max must be non-negative",
     }),
   tolerance_min: z
     .string()
     .transform((val) => parseFloat(val))
     .refine((val) => !isNaN(val), {
       message: "Tolerance min must be a valid number",
-    })
-    .refine((val) => val, { message: "Tolerance min must be non-negative" }),
+    }),
   method: z
     .string()
     .transform((val) => Number(val))
@@ -90,6 +86,7 @@ export default function AddMasterspec() {
   const [showError, setShowError] = useState(false);
   const [genCode, setGenCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectOptions, setSelectOptions] = useState([]); // Initialize state for select options
 
   // Initialize the form
   const form = useForm({
@@ -106,6 +103,24 @@ export default function AddMasterspec() {
       point: "",
     },
   });
+
+  // Fetch select options from API
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/process/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch select options");
+        }
+        const data = await response.json();
+        setSelectOptions(data.map(option => option.process_id));
+      } catch (error) {
+        console.error("Error fetching select options:", error);
+      }
+    };
+
+    fetchOptions();
+  }, []);
 
   // Handle form submission
   const onSubmit = async (data) => {
@@ -143,9 +158,6 @@ export default function AddMasterspec() {
   const onClear = () => {
     form.reset();
   };
-
-  // Select options
-  const selectOptions = ["sidelap", "odgrinding", "outgoing"];
 
   return (
     <div className="flex justify-center items-center">
@@ -301,11 +313,11 @@ export default function AddMasterspec() {
                 name="point"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Points</FormLabel>
+                    <FormLabel>Point</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="Points"
+                        placeholder="Point"
                         step="1"
                         {...field}
                       />
@@ -314,34 +326,35 @@ export default function AddMasterspec() {
                   </FormItem>
                 )}
               />
-              <div className="flex justify-end space-x-2">
-                <Button type="button" onClick={onClear} variant="outline">
+              <div className="flex justify-center space-x-4">
+                <Button type="submit">Submit</Button>
+                <Button type="button" variant="outline" onClick={onClear}>
                   Clear
                 </Button>
-                <Button type="submit">Submit</Button>
               </div>
             </form>
           </Form>
         </CardContent>
       </Card>
-      {/* Success Alert Dialog */}
-      <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialog open={open}>
         <AlertDialogContent>
-          <AlertDialogTitle>Specification Generated</AlertDialogTitle>
+          <AlertDialogTitle>Successfully</AlertDialogTitle>
           <AlertDialogDescription>
-            The specification ID {genCode} has been successfully generated.
+            The specification ID {genCode} 
             <div className="flex justify-center">
               <QRCode value={genCode} />
             </div>
           </AlertDialogDescription>
+
           <AlertDialogAction onClick={() => setOpen(false)}>Close</AlertDialogAction>
         </AlertDialogContent>
       </AlertDialog>
-      {/* Error Alert Dialog */}
-      <AlertDialog open={showError} onOpenChange={setShowError}>
+      <AlertDialog open={showError}>
         <AlertDialogContent>
           <AlertDialogTitle>Error</AlertDialogTitle>
-          <AlertDialogDescription>{errorMessage}</AlertDialogDescription>
+          <AlertDialogDescription className="flex justify-center">
+            {errorMessage}
+          </AlertDialogDescription>
           <AlertDialogAction onClick={() => setShowError(false)}>Close</AlertDialogAction>
         </AlertDialogContent>
       </AlertDialog>
