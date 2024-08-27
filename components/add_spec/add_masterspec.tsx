@@ -108,7 +108,7 @@ export default function AddMasterspec() {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await fetch("http://localhost:8000/process/");
+        const response = await fetch("http://192.168.0.201:8000/process/");
         if (!response.ok) {
           throw new Error("Failed to fetch select options");
         }
@@ -132,7 +132,7 @@ export default function AddMasterspec() {
     setShowError(false); // Hide the error alert
 
     try {
-      const response = await fetch("http://localhost:8000/specification/", {
+      const response = await fetch("http://192.168.0.201:8000/specification/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

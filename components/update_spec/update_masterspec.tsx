@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 async function getMasterSpec(): Promise<MasterSpec[]> {
   try {
-    const res = await fetch("http://localhost:8000/specification/");
+    const res = await fetch("http://192.168.0.201:8000/specification/");
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
